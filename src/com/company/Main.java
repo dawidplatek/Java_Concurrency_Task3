@@ -34,21 +34,21 @@ public class Main implements Callable<List<String>>{
         return onp.obliczOnp(onp.przeksztalcNaOnp(expression));
     }
 
-    static void writeFile(List<String> expressions) throws IOException {
+    static void writeFile(List<String> results) throws IOException {
         FileOutputStream fos = new FileOutputStream(filePath);
-        String finalExpression = " ";
-        for (int i = 0; i < expressions.size(); i++) {
-            finalExpression = expressions.get(i) + " " + computeExpression(expressions.get(i)) +"\n";
-            fos.write(finalExpression.getBytes());
+        String finalResult = "";
+        for (int i = 0; i < results.size(); i++) {
+            finalResult = results.get(i) + "\n";
+            fos.write(finalResult.getBytes());
         }
         fos.close();
     }
 
     public static void main(String[] args) throws Exception {
 
-        Future<List<String>> emptyList = executorService.submit(new Main());
-        List<String> consumedList= emptyList.get();
-        writeFile(consumedList);
+        Future<List<String>> emptyListOfResults = executorService.submit(new Main());
+        List<String> computedList= emptyListOfResults.get();
+        writeFile(computedList);
         executorService.shutdown();
     }
 }
