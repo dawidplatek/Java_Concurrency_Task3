@@ -1,13 +1,13 @@
 package com.company;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 
@@ -31,14 +31,21 @@ public class Main implements Callable<List<String>>{
         return onp.obliczOnp(onp.przeksztalcNaOnp(expression));
     }
 
+    static void writeFile(List<String> expressions) throws IOException {
+        FileOutputStream fos = new FileOutputStream(filePath);
+        String finalExpression = " ";
+        for (int i = 0; i < expressions.size(); i++) {
+            finalExpression = expressions.get(i) + " " + computeExpression(expressions.get(i)) +"\n";
+            fos.write(finalExpression.getBytes());
+        }
+        fos.close();
+    }
+
     public static void main(String[] args) throws Exception {
 
-        Future<List<String>> listOfLines = executorService.submit(new Main());
-        List<String> strings = listOfLines.get();
-        for (String exp : strings) {
-            String result = computeExpression(exp);
-            System.out.println(exp + " " + result);
-        }
+        Future<List<String>> emptyList = executorService.submit(new Main());
+        List<String> consumedList= emptyList.get();
+            writeFile(consumedList);
         executorService.shutdown();
     }
 
