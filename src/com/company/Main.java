@@ -18,12 +18,15 @@ public class Main implements Callable<List<String>>{
 
     @Override
     public List<String> call() throws Exception {
-        List<String> listOfLines = new ArrayList<>();
+        List<String> listOfResults = new ArrayList<>();
         Stream<String> lines = Files.lines(Paths.get(filePath));
         lines.map(line -> line.split(","))
                 .flatMap(Arrays::stream)
-                .forEach(listOfLines::add);
-        return listOfLines;
+                .forEach(line -> {
+                    String result = computeExpression(line);
+                    listOfResults.add(result);
+                });
+        return listOfResults;
     }
 
     static String computeExpression(String expression) {
@@ -45,9 +48,8 @@ public class Main implements Callable<List<String>>{
 
         Future<List<String>> emptyList = executorService.submit(new Main());
         List<String> consumedList= emptyList.get();
-            writeFile(consumedList);
+        writeFile(consumedList);
         executorService.shutdown();
     }
-
 }
 
