@@ -31,7 +31,7 @@ public class EquationHandler {
                 .flatMap(Arrays::stream)
                 .forEach(listOfLines::add);
         for(String equation : listOfLines) {
-            EquationFuture equationFuture = new EquationFuture(new Equation(equation), this.filePath);
+            EquationFuture equationFuture = new EquationFuture(new Equation(equation), lines, this.filePath);
             this.results.add(Executors.callable(equationFuture));
         }
     }

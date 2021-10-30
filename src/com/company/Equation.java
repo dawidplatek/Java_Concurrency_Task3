@@ -18,4 +18,8 @@ public class Equation implements Callable<String> {
         String result = this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(this.equation));
         return result;
     }
+
+    public String getEquation() {
+        return this.equation;
+    }
 }
