@@ -1,5 +1,6 @@
 package com.company;
 
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class EquationHandler {
 
     private ExecutorService executorService;
     private String filePath;
+    private BufferedWriter in;
 
     private List<Callable<Object>> results;
 
@@ -30,14 +32,16 @@ public class EquationHandler {
         lines.map(line -> line.split(","))
                 .flatMap(Arrays::stream)
                 .forEach(listOfLines::add);
+        this.in = new BufferedWriter(new FileWriter(this.filePath));
         for(String equation : listOfLines) {
-            EquationFuture equationFuture = new EquationFuture(new Equation(equation), lines, this.filePath);
+            EquationFuture equationFuture = new EquationFuture(new Equation(equation), in);
             this.results.add(Executors.callable(equationFuture));
         }
     }
 
-    public void calculateEquations() throws InterruptedException, ExecutionException {
+    public void calculateEquations() throws InterruptedException, ExecutionException, IOException {
         this.executorService.invokeAll(this.results);
+        this.in.close();
         this.executorService.shutdown();
     }
 }
