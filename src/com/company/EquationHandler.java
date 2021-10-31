@@ -7,18 +7,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 public class EquationHandler {
 
-    private ExecutorService executorService;
-    private String filePath;
-    private BufferedWriter in;
+    private final ExecutorService executorService;
+    private final String filePath;
+    private BufferedWriter bufferedWriter;
 
-    private List<Callable<Object>> results;
+    private final List<Callable<Object>> results;
 
     public EquationHandler(String filePath, ExecutorService executorService) {
         this.filePath = filePath;
@@ -32,16 +31,17 @@ public class EquationHandler {
         lines.map(line -> line.split(","))
                 .flatMap(Arrays::stream)
                 .forEach(listOfLines::add);
-        this.in = new BufferedWriter(new FileWriter(this.filePath));
+        this.bufferedWriter = new BufferedWriter(new FileWriter(this.filePath));
         for(String equation : listOfLines) {
-            EquationFuture equationFuture = new EquationFuture(new Equation(equation), in);
+            EquationFuture equationFuture = new EquationFuture(new Equation(equation), bufferedWriter);
             this.results.add(Executors.callable(equationFuture));
         }
     }
 
-    public void calculateEquations() throws InterruptedException, ExecutionException, IOException {
+    public void calculateEquations() throws InterruptedException, IOException {
         this.executorService.invokeAll(this.results);
-        this.in.close();
+        this.bufferedWriter.flush();
+        this.bufferedWriter.close();
         this.executorService.shutdown();
     }
 }

@@ -5,7 +5,7 @@ package com.company;
  * Klasa implementująca kalkulator ONP
  */
 public class ONP {
-    private TabStack stack = new TabStack();
+    private final TabStack stack = new TabStack();
 
     /**
      * Metoda sprawdza czy równanie kończy się znakiem '='
@@ -13,10 +13,7 @@ public class ONP {
      * @return true jeśli równanie jest poprawne, false jeśli niepoprawne
      */
     boolean czyPoprawneRownanie(String rownanie) {
-        if (rownanie.endsWith("="))
-            return true;
-        else
-            return false;
+        return rownanie.endsWith("=");
     }
 
     /**
@@ -55,7 +52,6 @@ public class ONP {
                             break;
                         }
                         case('x'):
-                            ;
                         case ('*'): {
                             stack.push((a * b) + "");
                             break;
@@ -94,7 +90,6 @@ public class ONP {
                 } else
                     switch (rownanie.charAt(i)) {
                         case ('+'):
-                            ;
                         case ('-'): {
                             while (stack.getSize() > 0
                                     && !stack.showValue(stack.getSize() - 1)
@@ -106,9 +101,7 @@ public class ONP {
                             break;
                         }
                         case('x'):
-                            ;
                         case ('*'):
-                            ;
                         case ('/'): {
                             while (stack.getSize() > 0
                                     && !stack.showValue(stack.getSize() - 1)

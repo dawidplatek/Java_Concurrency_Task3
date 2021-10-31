@@ -4,8 +4,8 @@ import java.util.concurrent.Callable;
 
 public class Equation implements Callable<String> {
 
-    private String equation;
-    private ONP calculator;
+    private final String equation;
+    private final ONP calculator;
 
     public Equation(String equation) {
         this.calculator = new ONP();
@@ -14,8 +14,9 @@ public class Equation implements Callable<String> {
 
 
     @Override
-    public String call() throws Exception {
+    public String call() {
         String result = this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(this.equation));
+        System.out.println(this.equation + result);
         return result;
     }
 

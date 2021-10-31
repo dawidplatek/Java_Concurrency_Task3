@@ -1,32 +1,26 @@
 package com.company;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.*;
 
 public class EquationFuture extends FutureTask<String> {
 
-    private BufferedWriter in;
-    private String equation;
+    private final BufferedWriter bufferedWriter;
+    private final String equation;
 
 
-    public EquationFuture(Equation equation, BufferedWriter in) {
+    public EquationFuture(Equation equation, BufferedWriter bufferedWriter) {
         super(equation);
         this.equation = equation.getEquation();
-        this.in = in;
+        this.bufferedWriter = bufferedWriter;
     }
 
     @Override
     protected void done() {
         try {
-            this.in.newLine();
-            this.in.write(this.equation + this.get());
+            this.bufferedWriter.write(this.equation + this.get());
+            this.bufferedWriter.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

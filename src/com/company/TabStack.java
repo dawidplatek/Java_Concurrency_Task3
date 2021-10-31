@@ -4,7 +4,7 @@ package com.company;
  * Klasa implementująca stos za pomocą tablicy
  */
 public class TabStack {
-    private String[] stack = new String[20];
+    private final String[] stack = new String[20];
     private int size = 0;
     /**
      * Metoda zdejmująca wartość ze stosu
