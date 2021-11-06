@@ -8,8 +8,7 @@ public class Main {
     private static final String filePath = "rownania.txt";
 
     public static void main(String[] args) throws Exception {
-        EquationHandler equationHandler = new EquationHandler(filePath, Executors.newFixedThreadPool(3));
-        equationHandler.loadFile();
+        EquationHandler equationHandler = new EquationHandler(filePath, Executors.newFixedThreadPool(5));
         equationHandler.calculateEquations();
     }
 

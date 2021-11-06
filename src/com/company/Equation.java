@@ -1,26 +1,30 @@
 package com.company;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Equation implements Callable<String> {
 
-    private final String equation;
     private final ONP calculator;
+    private File file;
 
-    public Equation(String equation) {
+    public Equation(File file) {
         this.calculator = new ONP();
-        this.equation = equation;
+        this.file = file;
     }
-
 
     @Override
-    public String call() {
-        String result = this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(this.equation));
-        System.out.println(this.equation + result);
-        return result;
-    }
-
-    public String getEquation() {
-        return this.equation;
+    public String call() throws IOException {
+        List<String> fileContent = new ArrayList<>(Files.readAllLines(this.file.toPath(), StandardCharsets.UTF_8));
+        for(String line : fileContent) {
+            if(line.endsWith("=")) {
+                return line + this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(line));
+            }
+        }
+        return "";
     }
 }
