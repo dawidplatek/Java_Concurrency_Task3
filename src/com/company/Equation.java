@@ -1,10 +1,6 @@
 package com.company;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 public class Equation implements Callable<String> {
@@ -19,12 +15,15 @@ public class Equation implements Callable<String> {
 
     @Override
     public String call() throws IOException {
-        List<String> fileContent = new ArrayList<>(Files.readAllLines(this.file.toPath(), StandardCharsets.UTF_8));
-        for(String line : fileContent) {
-            if(line.endsWith("=")) {
-                return line + this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(line));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(this.file));
+        String equation;
+        while((equation = bufferedReader.readLine()) != null) {
+            if(equation.endsWith("=")) {
+                break;
             }
         }
-        return "";
+        bufferedReader.close();
+        if(equation == null) return "";
+        return equation + this.calculator.obliczOnp(this.calculator.przeksztalcNaOnp(equation));
     }
 }
