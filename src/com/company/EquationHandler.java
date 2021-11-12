@@ -21,8 +21,9 @@ public class EquationHandler {
     }
 
     public void calculateEquations() throws InterruptedException {
-        for(int i = 0; i < 36; i++) {
-            this.tasks.add(Executors.callable(new EquationFuture(this.file)));
+        FileCondition fileCondition = new FileCondition(this.file);
+        for(int i = 0; i < 10; i++) {
+            this.tasks.add(Executors.callable(new EquationFuture(fileCondition)));
         }
         this.executorService.invokeAll(this.tasks);
         this.executorService.shutdown();
