@@ -22,7 +22,7 @@ public class EquationHandler {
 
     public void calculateEquations() throws InterruptedException {
         FileCondition fileCondition = new FileCondition(this.file);
-        for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 15; i++) {
             this.tasks.add(Executors.callable(new EquationFuture(fileCondition)));
         }
         this.executorService.invokeAll(this.tasks);

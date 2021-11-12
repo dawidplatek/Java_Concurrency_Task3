@@ -70,7 +70,7 @@ public class FileCondition {
 
             this.newContent = true;
             this.fileWrite.signal();
-
+            this.queue.remove(this.queue.indexOf(equation));
             System.out.println("Test 2 " + this.newContent);
 
 
