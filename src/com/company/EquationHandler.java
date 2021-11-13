@@ -20,9 +20,12 @@ public class EquationHandler {
         this.tasks = new ArrayList<>();
     }
 
-    public void calculateEquations() throws InterruptedException {
+    public void calculateEquations() throws InterruptedException, IOException {
         FileCondition fileCondition = new FileCondition(this.file);
-        for(int i = 0; i < 15; i++) {
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(this.file));
+        int lines = 0;
+        while(bufferedReader.readLine() != null) lines++;
+        for(int i = 0; i < lines; i++) {
             this.tasks.add(Executors.callable(new EquationFuture(fileCondition)));
         }
         this.executorService.invokeAll(this.tasks);
