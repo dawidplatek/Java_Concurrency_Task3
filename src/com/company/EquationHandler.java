@@ -23,9 +23,7 @@ public class EquationHandler {
     public void calculateEquations() throws InterruptedException, IOException {
         FileCondition fileCondition = new FileCondition(this.file);
         BufferedReader bufferedReader = new BufferedReader(new FileReader(this.file));
-        int lines = 0;
-        while(bufferedReader.readLine() != null) lines++;
-        for(int i = 0; i < lines; i++) {
+        while(bufferedReader.readLine() != null) {
             this.tasks.add(Executors.callable(new EquationFuture(fileCondition)));
         }
         this.executorService.invokeAll(this.tasks);
